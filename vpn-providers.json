@@ -1,0 +1,39 @@
+{
+    "name": "vpn-providers",
+    "description": "VPN providers custom OONI Run v2 descriptor",
+    "author": "github.com/ainghazal",
+    "nettests": [
+        {
+            "inputs": [
+                "https://api.black.riseup.net",
+                "https://riseup.net/en/vpn",
+                "https://api.protonvpn.ch/vpn/logicals",
+                "https://www.tunnelbear.com/",
+                "https://www.mozilla.org/en-US/products/vpn/download/",
+                "https://www.ivpn.net/"
+            ],
+            "test_name": "web_connectivity@v0.5"
+        },
+        {
+            "inputs": [
+                "udp://8.8.8.8:53/"
+            ],
+            "options": {
+                "Domain": "tw.lazerpenguin.com",
+                "DefaultAddrs": "8.8.4.4 8.8.8.8 2001:4860:4860::8844 2001:4860:4860::8888"
+            },
+            "test_name": "dnscheck"
+        },
+        {
+            "inputs": [
+                "https://dns.google/dns-query"
+            ],
+            "options": {
+                "Domain": "tw.lazerpenguin.com",
+                "DefaultAddrs": "8.8.4.4 8.8.8.8 2001:4860:4860::8844 2001:4860:4860::8888",
+                "HTTP3Enabled": true
+            },
+            "test_name": "dnscheck"
+        }
+    ]
+}
