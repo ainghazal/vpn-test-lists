@@ -62,7 +62,7 @@ def check_measurements(mm):
             MIN_TS = ts
 
         tk = m["test_keys"]
-        icmp_ok = tk["success_handshake"]
+        icmp_ok = tk.get("success_handshake", False)
 
         i = m["input"]
         INPUTS += 1
@@ -73,7 +73,9 @@ def check_measurements(mm):
         PROVIDERS.append(provider)
         query = url.query
         params = parse_qs(query)
-        addr = params['addr']
+        addr = params.get('addr')
+        if not addr:
+            continue
         if len(addr) != 1:
             print("wrong addr:", i)
             sys.exit(1)

@@ -5,4 +5,5 @@ cd /root/ooni
 for desc in oonirun/*.json;
 do 
 	./miniooni.vpn -y -f $desc --probe-services $BACKEND oonirun;
+	./archive.sh report.jsonl store
 done
