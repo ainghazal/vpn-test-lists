@@ -8,8 +8,6 @@ import sys
 import os
 from urllib.parse import urlparse, parse_qs
 
-from packaging import version
-
 TIME_FMT = '%Y-%m-%d %H:%M:%S'
 
 MIN_VERSION = "0.0.16"
@@ -31,8 +29,12 @@ UDP_OK = 0
 TCP_OK = 0
 OBFS4_OK= 0
 
+def versionParse(ver):
+    v = ver.split('.')
+    return int(v[0]) * 10000 + int(v[1]) * 1000  + int(v[2])
+
 def isValidVersion(ver):
-    return version.parse(ver) >= version.parse(MIN_VERSION)
+    return versionParse(ver) >= versionParse(MIN_VERSION)
 
 
 def parseReport(path):
@@ -114,5 +116,6 @@ def check_measurements(mm):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 2 and os.path.exists(path := sys.argv[1]):
+    path = sys.argv[1]
+    if len(sys.argv) == 2 and os.path.exists(path):
         parseReport(path)
