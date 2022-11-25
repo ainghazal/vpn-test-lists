@@ -6,10 +6,11 @@
         {
             "inputs": [
                 "https://riseup.net/en/vpn",
-                "https://api.protonvpn.ch/vpn/logicals",
-                "https://www.tunnelbear.com/",
                 "https://www.mozilla.org/en-US/products/vpn/download/",
-                "https://www.ivpn.net/"
+                "https://www.ivpn.net/",
+                "https://www.tunnelbear.com/",
+                "https://api.tunnelbear.com/v2/status",
+                "https://api.protonvpn.ch/vpn/logicals"
             ],
             "test_name": "web_connectivity@v0.5"
         },
@@ -25,16 +26,6 @@
             ],
             "options": {
                 "Domain": "us.lazerpenguin.com",
-                "DefaultAddrs": "8.8.4.4 8.8.8.8 2001:4860:4860::8844 2001:4860:4860::8888"
-            },
-            "test_name": "dnscheck"
-        },
-        {
-            "inputs": [
-                "udp://8.8.8.8:53/"
-            ],
-            "options": {
-                "Domain": "tw.lazerpenguin.com",
                 "DefaultAddrs": "8.8.4.4 8.8.8.8 2001:4860:4860::8844 2001:4860:4860::8888"
             },
             "test_name": "dnscheck"
