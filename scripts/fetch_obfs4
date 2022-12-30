@@ -1,0 +1,154 @@
+#!/usr/bin/env python3
+#
+# Extract obfs4 credentials from Tunnelbear API.
+# (c) 2022 Ain Ghazal
+#
+# Given a set of valid credentials (on disk), query the right Tunnelbear API endpoints
+# to get a list of servers per region, and filter out obfs4 endpoints for a given
+# country code.
+# 
+from datetime import datetime
+from datetime import timedelta
+import os
+import sys
+
+import requests
+import pprint
+
+# Can be overriden by sys.argv[1]
+TARGET_COUNTRY = "US"
+
+# User is expected to place secrets in this file.
+# Create a free account with Tunnelbear.
+# First line: username
+# Second line: password
+LOCAL_CREDS_PATH = "~/.miniooni/vpn/tunnelbear.txt"
+
+# Path where bearer token will be cached.
+LOCAL_TOKEN_PATH = "~/.miniooni/vpn/tunnelbear-token.txt"
+
+# Do not make changes below this line.
+tokenURL = "https://api.tunnelbear.com/v2/token"
+polarAPIBase = "https://api.polargrizzly.com"
+polarBearURL = polarAPIBase + "/auth"
+regionsURL= polarAPIBase + "/regions"
+regionServersURL = polarAPIBase + "/vpns/regions/{_id}?obfuscation=1"
+
+
+def parseCredentialsFromLocalFile():
+    with open(os.path.expanduser(LOCAL_CREDS_PATH), 'r') as f:
+        creds = f.readlines()
+    if len(creds) != 2:
+        print("Missing credentials file. Please write it to", LOCAL_CREDS_PATH)
+        sys.exit(1)
+    username = creds[0].strip()
+    password = creds[1].strip()
+    return username, password
+
+def getAuthInfo():
+    username, password = parseCredentialsFromLocalFile()
+    auth = {
+            "username": username,
+            "password": password,
+            "grant_type": "password",
+            "device": "ooni-probe"
+    }
+    return auth
+
+def fetchBearerToken():
+    auth = getAuthInfo()
+    t = requests.post(tokenURL, json=auth)
+    if t.status_code != 200:
+        print("bad status code:", t.status_code)
+        sys.exit(1)
+    token = t.json()['access_token']
+    authPolarBear = {
+            "partner": "tunnelbear",
+            "token": token
+    }
+    pt = requests.post(polarBearURL, json=authPolarBear)
+    bearerToken = pt.headers.get("Authorization")
+    tokenPath = os.path.expanduser(LOCAL_TOKEN_PATH)
+    tokenDir = os.path.split(tokenPath)[0]
+    os.makedirs(tokenDir, exist_ok=True)
+
+    with open(tokenPath, 'w') as f:
+        f.write(bearerToken)
+    return bearerToken
+
+def is_file_older_than(file, delta): 
+	cutoff = datetime.utcnow() - delta
+	mtime = datetime.utcfromtimestamp(os.path.getmtime(file))
+	if mtime < cutoff:
+		return True
+	return False
+
+def getBearerTokenFromDiskCacheOrAPI():
+    bearerToken = None
+    tokenPath = os.path.expanduser(LOCAL_TOKEN_PATH)
+    
+    if os.path.exists(tokenPath) and not is_file_older_than(tokenPath, timedelta(minutes=60)):
+        try:
+            with open(tokenPath, 'r') as f:
+                token = f.read().strip()
+                bearerToken = token
+        except Exception as exc:
+            print(exc)
+            pass
+
+    if bearerToken is None:
+        bearerToken = fetchBearerToken()
+
+    if bearerToken is None:
+        print("no bearer token")
+        sys.exit(1)
+    return bearerToken
+
+def authHeaders(token):
+    return {'Authorization': token}
+
+def fetchAllRegions(token):
+    regions = requests.get(regionsURL, headers=authHeaders(token)).json()
+    return regions
+
+def getIDForCountryCode(cc, regionsList):
+    for item in regionsList:
+        if item['country_iso'] == cc:
+            return item['id']
+    return 0
+
+def selectCountryIDFromAvailableRegions(country_iso, token):
+    regions = fetchAllRegions(token)
+    targetID = getIDForCountryCode(country_iso, regions)
+    return targetID
+
+def getAllServersForCountryID(country_id, token):
+    servers = requests.get(regionServersURL.format(_id=country_id), headers=authHeaders(token)).json()
+    return servers
+
+def filterOBFS4BridgesForCountryCode(cc, token):
+    targetID = selectCountryIDFromAvailableRegions(cc, token)
+    servers = getAllServersForCountryID(targetID, token)
+    filtered = []
+    for server in servers['vpns']:
+        if server['protocol'] == 'obfs4':
+            addr = server['host'] + ':' + str(server['port'])
+            filtered.append({
+                'cc': cc.lower(),
+                'host': addr,
+                'cert': server['cert']
+            })
+    return filtered
+
+
+def main():
+    global TARGET_COUNTRY
+    if len(sys.argv) > 1:
+        TARGET_COUNTRY = sys.argv[1]
+
+    bearerToken = getBearerTokenFromDiskCacheOrAPI()
+    endpoints = filterOBFS4BridgesForCountryCode(TARGET_COUNTRY, bearerToken)
+    pprint.pprint(endpoints)
+
+if __name__ == "__main__":
+    main()
