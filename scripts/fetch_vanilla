@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+from urllib.parse import urlparse, parse_qs
+import sys
+
+import requests
+import pprint
+
+CC = sys.argv[1]
+PROVIDER = sys.argv[2]
+REP = int(sys.argv[3])
+
+MAX_RETRIES = 100
+retries = 0
+endpoints = []
+
+while len(endpoints) < REP:
+    retries += 1
+    if retries > MAX_RETRIES:
+        break
+    desc = requests.get(f"https://share.asdf.network/vpn/{CC}/{PROVIDER}.json").json()
+    tests = desc['nettests'][0]
+    inputs = tests['inputs']
+    for url in inputs:
+        o = urlparse(url)
+        params = parse_qs(o.query)
+        addr = params.get('addr')[0]
+        if addr not in endpoints:
+            endpoints.append(addr)
+
+pprint.pprint(endpoints)
+
