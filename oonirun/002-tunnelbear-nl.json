@@ -6,16 +6,16 @@
     {
       "test_name": "openvpn",
       "inputs": [
-        "vpn://openvpn.tunnelbear/?addr=64.227.71.45:443&transport=tcp&obfs=none",
-        "vpn://openvpn.tunnelbear/?addr=64.227.71.45:443&transport=udp&obfs=none",
-        "vpn://openvpn.tunnelbear/?addr=45.84.123.41:443&transport=tcp&obfs=none",
-        "vpn://openvpn.tunnelbear/?addr=45.84.123.41:443&transport=udp&obfs=none",
-        "vpn://openvpn.tunnelbear/?addr=134.122.57.54:443&transport=tcp&obfs=none",
-        "vpn://openvpn.tunnelbear/?addr=134.122.57.54:443&transport=udp&obfs=none",
-        "vpn://openvpn.tunnelbear/?addr=134.122.62.238:443&transport=tcp&obfs=none",
-        "vpn://openvpn.tunnelbear/?addr=134.122.62.238:443&transport=udp&obfs=none",
-        "vpn://openvpn.tunnelbear/?addr=157.245.77.161:443&transport=tcp&obfs=none",
-        "vpn://openvpn.tunnelbear/?addr=157.245.77.161:443&transport=udp&obfs=none"
+        "vpn://openvpn.tunnelbear/?addr=64.225.68.36:443&transport=tcp&obfs=none",
+        "vpn://openvpn.tunnelbear/?addr=64.225.68.36:443&transport=udp&obfs=none",
+        "vpn://openvpn.tunnelbear/?addr=164.92.210.24:443&transport=tcp&obfs=none",
+        "vpn://openvpn.tunnelbear/?addr=164.92.210.24:443&transport=udp&obfs=none",
+        "vpn://openvpn.tunnelbear/?addr=167.71.9.209:443&transport=tcp&obfs=none",
+        "vpn://openvpn.tunnelbear/?addr=167.71.9.209:443&transport=udp&obfs=none",
+        "vpn://openvpn.tunnelbear/?addr=174.138.1.142:443&transport=tcp&obfs=none",
+        "vpn://openvpn.tunnelbear/?addr=174.138.1.142:443&transport=udp&obfs=none",
+        "vpn://openvpn.tunnelbear/?addr=206.189.5.124:443&transport=tcp&obfs=none",
+        "vpn://openvpn.tunnelbear/?addr=206.189.5.124:443&transport=udp&obfs=none"
       ],
       "options": {
         "Cipher": "AES-256-GCM",
