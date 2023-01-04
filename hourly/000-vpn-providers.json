@@ -8,6 +8,7 @@
                 "https://riseup.net/en/vpn",
                 "https://black.riseup.net/ca.crt",
                 "https://www.mozilla.org/en-US/products/vpn/download/",
+                "https://vpn.mozilla.org/api/v1/vpn/versions",
                 "https://www.ivpn.net/",
                 "https://www.tunnelbear.com/",
                 "https://api.tunnelbear.com/v2/status",
