@@ -27,5 +27,6 @@ while len(endpoints) < REP:
         if addr not in endpoints:
             endpoints.append(addr)
 
-pprint.pprint(endpoints)
+#pprint.pprint(endpoints)
+print(','.join(endpoints))
 
