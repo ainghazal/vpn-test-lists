@@ -148,7 +148,8 @@ def main():
 
     bearerToken = getBearerTokenFromDiskCacheOrAPI()
     endpoints = filterOBFS4BridgesForCountryCode(TARGET_COUNTRY, bearerToken)
-    pprint.pprint(endpoints)
+    print(','.join(endpoints))
+    #pprint.pprint(endpoints)
 
 if __name__ == "__main__":
     main()
