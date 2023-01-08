@@ -6,5 +6,6 @@ for desc in oonirun/*.json;
 do 
 	#./miniooni -y -f $desc --probe-services $BACKEND oonirun;
 	./miniooni -y -f $desc oonirun;
-	./archive.sh report.jsonl store
+        # better: hostname + date +%Y-%m-%d-%s`
+        mv report.jsonl store/`hostname`-`date +%Y-%m-%d-%s`.jsonl
 done
