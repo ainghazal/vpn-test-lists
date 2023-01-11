@@ -3,7 +3,6 @@
 # Builds miniooni and checks common VPN APIs.
 # Dependencies: git, golang-go, wget
 #
-set -e
 DIR=/tmp/ooni-vpn-run
 MINIOONI_LINUX=miniooni-linux-amd64
 MINIOONI_RELEASE=https://github.com/ooni/probe-cli/releases/download/v3.16.7/${MINIOONI_LINUX}
@@ -15,7 +14,8 @@ PROBE_CLI=https://github.com/ooni/probe-cli
 mkdir -p ${DIR} && cd ${DIR}
 
 echo "Cloning probe-cli from Github"
-git clone ${PROBE_CLI} && cd probe-cli
+git clone ${PROBE_CLI}
+cd probe-cli
 echo "Compiling miniooni"
 CGO_ENABLED=0 go build -o ../miniooni ./internal/cmd/miniooni
 cd ../
