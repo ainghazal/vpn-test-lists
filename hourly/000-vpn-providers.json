@@ -14,6 +14,7 @@
                 "https://api.tunnelbear.com/v2/status",
                 "https://api.polargrizzly.com/",
                 "https://api.protonvpn.ch/vpn/logicals",
+                "https://api.mullvad.net/app/v1/relays",
                 "https://nordvpn.com/ovpn/",
                 "https://downloads.nordcdn.com/configs/files/ovpn_legacy/servers/at131.nordvpn.com.udp1194.ovpn"
             ],
