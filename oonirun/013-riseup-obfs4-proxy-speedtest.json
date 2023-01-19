@@ -10,7 +10,7 @@
       ],
       "options": {
         "PingCount": "10",
-        "WithSpeedTest": "20mb",
+        "WithSpeedTest": "10mb",
         "Cipher": "AES-256-GCM",
         "Auth": "SHA512",
         "Compress": "",
@@ -29,7 +29,7 @@
       ],
       "options": {
         "PingCount": "10",
-        "WithSpeedTest": "20mb",
+        "WithSpeedTest": "10mb",
         "Cipher": "AES-256-GCM",
         "Auth": "SHA512",
         "Compress": "",
